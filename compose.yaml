@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: postgres:17
+    container_name: market-postgres
+    environment:
+      POSTGRES_USER: market
+      POSTGRES_PASSWORD: ${MARKET_DB_PASSWORD}
+      POSTGRES_DB: market_data
+    ports:
+      - "5432:5432"
+    volumes:
+      - market-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U market -d market_data"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  market-pgdata:
+    external: true
