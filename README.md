@@ -8,12 +8,12 @@ The project uses synthetic market data rather than real financial data. The goal
 
 This repository is the consumer and transformation side of a three-repository lab:
 
-- **Vendor A — `mock-market-lab`**
+- **Vendor A - `mock-market-lab`**
   - Synthetic market-data producer
   - Provides streaming and batch-oriented market data
   - Consumer integration is planned but not yet implemented in this repository
 
-- **Vendor B — `company-sentiment`**
+- **Vendor B - `company-sentiment`**
   - Independent synthetic company-sentiment producer
   - Publishes PREMARKET and POSTMARKET JSON batches
   - Currently integrated with this pipeline
@@ -174,13 +174,13 @@ The ingestion path distinguishes between three cases:
 
 ```text
 artifact does not exist
-        → create it
+        > create it
 
 artifact exists with identical SHA-256
-        → unchanged / safe retry
+        > unchanged / safe retry
 
 artifact exists with different content
-        → fail
+        > fail
 ```
 
 The same principle is carried into the PostgreSQL loader.
@@ -253,10 +253,10 @@ The planned design uses its two interfaces for different purposes:
 
 ```text
 Vendor A SSE
-    → long-running streaming consumer
+    > long-running streaming consumer
 
 Vendor A daily batch
-    → scheduled batch ingestion / reconciliation
+    > scheduled batch ingestion / reconciliation
 ```
 
 The SSE consumer would run as a long-lived service rather than as a permanently running Airflow task. Airflow would remain responsible for scheduled batch and reconciliation workflows.
@@ -265,8 +265,8 @@ The eventual goal is to reconcile streamed market events with the authoritative 
 
 ## Related Repositories
 
-- `DDJesus/mock-market-lab` — synthetic Vendor A market-data producer
-- `DDJesus/company-sentiment` — synthetic Vendor B company-sentiment producer
+- `DDJesus/mock-market-lab` - synthetic Vendor A market-data producer
+- `DDJesus/company-sentiment` - synthetic Vendor B company-sentiment producer
 
 These producers are intentionally maintained independently from the consumer pipeline so that ingestion occurs across an external interface rather than by importing producer implementation code.
 
@@ -274,23 +274,23 @@ These producers are intentionally maintained independently from the consumer pip
 
 The stack was chosen to give each component a distinct responsibility rather than to maximize the number of technologies used.
 
-**Apache Airflow — orchestration**
+**Apache Airflow - orchestration**
 
 Airflow fits scheduled, dependency-driven workflows such as fetching a published batch, retrying transient failures, and coordinating downstream processing. It was not chosen as the eventual SSE runtime because a continuously running stream consumer has a different lifecycle from a scheduled DAG.
 
-**PostgreSQL — relational warehouse and persistent state**
+**PostgreSQL - relational warehouse and persistent state**
 
 PostgreSQL provides durable relational storage, transactions, constraints, and familiar SQL semantics. The current data volume does not justify a distributed warehouse or processing platform, and PostgreSQL makes relational modeling behavior easy to inspect directly.
 
-**dbt — transformation and data contracts**
+**dbt - transformation and data contracts**
 
 Transformation logic is separated from ingestion. dbt provides explicit model dependencies, reusable SQL transformations, testing, documentation, and lineage while allowing the raw ingestion layer to remain source-oriented.
 
-**Python — ingestion and boundary validation**
+**Python - ingestion and boundary validation**
 
 Python handles operations that are awkward or inappropriate to express as warehouse transformations: HTTP acquisition, byte-level artifact preservation, hashing, source-contract validation, and transactional loading.
 
-**Docker Compose — reproducible local infrastructure**
+**Docker Compose - reproducible local infrastructure**
 
 Compose provides isolated, repeatable services without introducing orchestration infrastructure that the scale of this lab does not require. 
 
@@ -302,4 +302,4 @@ This is a learning and portfolio project, not a production trading system.
 
 The current milestone demonstrates a complete Vendor B path from independently produced source data through orchestration, immutable landing, transactional warehouse loading, dbt transformation, and data-quality testing.
 
-Future work will focus on adding Vendor A only where doing so introduces a new engineering problem—particularly streaming ingestion and batch reconciliation—rather than expanding the synthetic dataset simply for volume.
+Future work will focus on adding Vendor A only where doing so introduces a new engineering problem-particularly streaming ingestion and batch reconciliation-rather than expanding the synthetic dataset simply for volume.
