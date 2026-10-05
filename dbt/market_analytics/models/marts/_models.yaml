@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: mart_company_sentiment_daily
+    description: >
+      Company-level Vendor B sentiment summary by market date
+      and publication batch.
+
+    columns:
+      - name: market_date
+        data_tests:
+          - not_null
+
+      - name: batch_type
+        data_tests:
+          - not_null
+
+      - name: ticker
+        data_tests:
+          - not_null
+
+      - name: observation_count
+        data_tests:
+          - not_null
+
+      - name: total_engagement
+        data_tests:
+          - not_null

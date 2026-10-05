@@ -1,0 +1,13 @@
+version: 2
+
+sources:
+  - name: vendor_b
+    description: Raw Vendor B sentiment data loaded by the ingestion pipeline.
+    schema: raw
+
+    tables:
+      - name: vendor_b_batch
+        description: One row per immutable Vendor B publication batch.
+
+      - name: vendor_b_observation
+        description: Individual sentiment observations belonging to Vendor B batches.

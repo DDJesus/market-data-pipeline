@@ -8,6 +8,11 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__EXECUTION_API_SERVER_URL: "http://airflow-api-server:8080/execution/"
     AIRFLOW__CORE__DAG_DISCOVERY_SAFE_MODE: "False"
     PYTHONPATH: /opt/airflow/src
+    MARKET_DB_HOST: postgres
+    MARKET_DB_PORT: "5432"
+    MARKET_DB_NAME: market_data
+    MARKET_DB_USER: market
+    MARKET_DB_PASSWORD: ${MARKET_DB_PASSWORD}
   volumes:
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs

@@ -1,6 +1,16 @@
 .env
+logs/
+
+# Python
 .venv/
 __pycache__/
-logs/
+*.pyc
+
+# dbt generated artifacts
+dbt/**/target/
+dbt/**/logs/
+dbt/**/dbt_packages/
+
+# Pipeline runtime data
 data/*
 !data/.gitkeep

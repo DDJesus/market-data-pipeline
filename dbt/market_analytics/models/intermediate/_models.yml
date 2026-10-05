@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: int_vendor_b__sentiment_with_identity
+    description: >
+      Vendor B sentiment observations resolved to the
+      consumer-owned market ticker identity.
+
+    columns:
+      - name: observation_id
+        data_tests:
+          - not_null
+          - unique
+
+      - name: ticker
+        description: Market ticker resolved through company_identity.
+        data_tests:
+          - not_null
